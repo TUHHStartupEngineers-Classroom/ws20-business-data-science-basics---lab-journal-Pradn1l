@@ -29,7 +29,7 @@ Notice that whatever you define as a top level header, automatically gets put in
 ```{r}
 # Data Science at TUHH ------------------------------------------------------
 # SALES ANALYSIS ----
-# P1
+# P1x
 
 #libraries ----
 library(tidyverse)
@@ -109,20 +109,85 @@ theme(axis.text.x = element_text(angle = 45, hjust = 1))+
 facet_wrap(vars(State))
 ```
 
-## Second level header
 
-You can add more headers by adding more hashtags. These won't be put into the table of contents
 
-### third level header
+# Assignment 2
 
-Here's an even lower level header
+```{r}
+library(tidyverse) 
+library(rvest)    
+library(xopen)    
+library(jsonlite) 
+library(glue)     
+library(stringi) 
 
-# My second post (note the order)
-Last compiled: `r Sys.Date()`
+url_home <- "https://www.radon-bikes.de/"
+xopen(url_home) 
 
-I'm writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom
+html_home <- read_html(url_home)
+list_of_product_types <- html_home%>%
+  html_nodes(css = ".megamenu__item > a")%>%
+  html_text()
 
-# Assignment 1
+
+list_of_products_url <- html_home %>%
+  html_nodes(".megamenu__item > a") %>%
+  html_attr("href") %>%
+  enframe(name = NULL, value = "url") %>%
+  mutate(url = str_glue("https://www.radon-bikes.de{url}"))
+
+
+bike_category_url <- list_of_products_url$url[1]
+
+xopen(bike_category_url)
+
+
+html_bike_category  <- read_html(bike_category_url)
+temp_url <- html_bike_category%>%
+  html_node(".a-button--hollow-secondary")%>%
+  html_attr("href")%>%
+  enframe(name = NULL, value = "url") %>%
+  mutate(url = str_glue("https://www.radon-bikes.de{url}"))
+
+temp_url <- temp_url$url[1]
+xopen(temp_url)
+
+bike_category_grid_html <- read_html(temp_url)
+
+list_of_product_names <- bike_category_grid_html%>%
+  html_nodes(css=".m-bikegrid__info > a > div > h4")%>%
+  html_text%>%
+  stringr::str_replace_all(pattern = "\n","")%>%
+  stringr::str_replace_all(pattern = "  ","")%>%
+  enframe(name = NULL, value = "NAME")
+
+
+
+list_of_product_prices <- bike_category_grid_html%>%
+  html_nodes(css=".m-bikegrid__price--active")%>%
+  html_text()%>%
+  stringr::str_extract(pattern = "[0-9€]+")%>%
+  stringr::str_replace(pattern = "€","")%>%
+  as.numeric()%>%
+  enframe(name = NULL, value = "PRICE")
+
+list_of_product_prices = na.omit(list_of_product_prices)
+```
+
+# Assignment 3
+
+So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place. 
+
+So, let's say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:
+
+```{r}
+samples <- rnorm(100, mean=0, sd=1)
+hist(samples)
+```
+
+When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You'll learn that all of these things and more can be customized in each R code block.
+
+# Assignment 4
 
 So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place. 
 

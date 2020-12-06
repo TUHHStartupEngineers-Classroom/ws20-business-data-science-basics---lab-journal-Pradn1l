@@ -412,31 +412,159 @@ div.tocify {
 
 <p><strong>IMPORTANT:</strong> You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.</p>
 <p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
-<div id="my-first-post" class="section level1">
-<h1><span class="header-section-number">1</span> My first post</h1>
+<div id="assingment-1" class="section level1">
+<h1><span class="header-section-number">1</span> Assingment 1</h1>
 <p>Last compiled: 2020-12-06</p>
 <p>Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left.</p>
-<div id="second-level-header" class="section level2">
-<h2><span class="header-section-number">1.1</span> Second level header</h2>
-<p>You can add more headers by adding more hashtags. These won’t be put into the table of contents</p>
-<div id="third-level-header" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> third level header</h3>
-<p>Here’s an even lower level header</p>
+<pre class="r"><code># Data Science at TUHH ------------------------------------------------------
+# SALES ANALYSIS ----
+# P1x
+
+#libraries ----
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(&quot;writexl&quot;)
+
+# Importing Files ----
+bikes_tbl      &lt;- read_excel(&quot;bikes.xlsx&quot;)
+orderlines_tbl &lt;- read_excel(&quot;orderlines.xlsx&quot;)
+bikeshops_tbl &lt;- read_excel(&quot;bikeshops.xlsx&quot;)
+
+# Examining Data ----
+View(orderlines_tbl)
+View(bikeshops_tbl)
+View(bikes_tbl)
+
+# Joining Data ----
+bike_orderlines_joined_tbl &lt;- orderlines_tbl %&gt;% left_join(bikes_tbl, by = c(&quot;product.id&quot; = &quot;bike.id&quot;)) %&gt;% left_join(bikeshops_tbl, by = c(&quot;customer.id&quot; = &quot;bikeshop.id&quot;))
+
+# Wrangling Data ----
+bike_orderlines_wrangled_tbl &lt;- bike_orderlines_joined_tbl %&gt;% separate(col    = location, into   = c(&quot;city&quot;, &quot;State&quot;), sep    = &quot;,&quot;) %&gt;% 
+mutate(total.price = price * quantity) %&gt;% rename(bikeshop = name) %&gt;% set_names(names(.) %&gt;% str_replace_all(&quot;\\.&quot;, &quot;_&quot;))
+
+# Business Insights ----
+
+# Sales by State ----
+
+# 1 - Manipulate
+sales_by_state_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;% select(State, total_price) %&gt;% group_by(State) %&gt;% summarize(sales = sum(total_price)) %&gt;%
+mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;))
+View(sales_by_state_tbl)
+
+sales_by_city_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;% select(city, total_price) %&gt;% group_by(city) %&gt;% summarize(sales = sum(total_price)) %&gt;%
+mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;))
+View(sales_by_city_tbl)
+
+# 2 - Visualize
+
+
+sales_by_state_tbl %&gt;%
+ggplot(aes(x = State, y = sales)) +
+geom_col(fill = &quot;#2DC6D6&quot;) + 
+geom_label(aes(label = sales_text)) +
+geom_smooth(method = &quot;lm&quot;, se = FALSE) + 
+scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;)) +
+labs(title    = &quot;Revenue by state&quot;, subtitle = &quot;Upward Trend&quot;, x = &quot;&quot;, y = &quot;Revenue&quot;)+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>sales_by_city_tbl %&gt;%
+ggplot(aes(x = city, y = sales)) +
+geom_col(fill = &quot;#2DC6D6&quot;) + 
+geom_label(aes(label = sales_text)) +
+geom_smooth(method = &quot;lm&quot;, se = FALSE) + 
+scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;)) +
+labs(title    = &quot;Revenue by city&quot;, subtitle = &quot;Upward Trend&quot;, x = &quot;&quot;, y = &quot;Revenue&quot;)+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<pre class="r"><code># Sales by Year and location ----
+
+# 1 - Manipulate
+sales_by_location_year_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;% select(State, order_date, total_price) %&gt;%  mutate(year = year(order_date)) %&gt;%
+group_by(State ,year) %&gt;% summarize(sales = sum(total_price)) %&gt;% mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;))
+View(sales_by_location_year_tbl)
+
+# 2 - Visualize
+sales_by_location_year_tbl %&gt;%
+ggplot(aes(x = year, y = sales)) +
+geom_col(fill = &quot;#2DC6D6&quot;) + 
+geom_label(aes(label = sales_text)) +
+geom_smooth(method = &quot;lm&quot;, se = FALSE) + 
+scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;)) +
+labs(title    = &quot;Revenue by state and year&quot;, subtitle = &quot;Upward Trend&quot;, x = &quot;&quot;, y = &quot;Revenue&quot;)+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+facet_wrap(vars(State))</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
 </div>
+<div id="assignment-2" class="section level1">
+<h1><span class="header-section-number">2</span> Assignment 2</h1>
+<pre class="r"><code>library(tidyverse) 
+library(rvest)    
+library(xopen)    
+library(jsonlite) 
+library(glue)     
+library(stringi) 
+
+url_home &lt;- &quot;https://www.radon-bikes.de/&quot;
+xopen(url_home) </code></pre>
+<pre><code>## Running cmd /c start &quot;\&quot;\&quot;&quot; /b &quot;https://www.radon-bikes.de/&quot;</code></pre>
+<pre class="r"><code>html_home &lt;- read_html(url_home)
+list_of_product_types &lt;- html_home%&gt;%
+  html_nodes(css = &quot;.megamenu__item &gt; a&quot;)%&gt;%
+  html_text()
+
+
+list_of_products_url &lt;- html_home %&gt;%
+  html_nodes(&quot;.megamenu__item &gt; a&quot;) %&gt;%
+  html_attr(&quot;href&quot;) %&gt;%
+  enframe(name = NULL, value = &quot;url&quot;) %&gt;%
+  mutate(url = str_glue(&quot;https://www.radon-bikes.de{url}&quot;))
+
+
+bike_category_url &lt;- list_of_products_url$url[1]
+
+xopen(bike_category_url)</code></pre>
+<pre><code>## Running cmd /c start &quot;\&quot;\&quot;&quot; /b \
+##   &quot;https://www.radon-bikes.de/mountainbike/hardtail/&quot;</code></pre>
+<pre class="r"><code>html_bike_category  &lt;- read_html(bike_category_url)
+temp_url &lt;- html_bike_category%&gt;%
+  html_node(&quot;.a-button--hollow-secondary&quot;)%&gt;%
+  html_attr(&quot;href&quot;)%&gt;%
+  enframe(name = NULL, value = &quot;url&quot;) %&gt;%
+  mutate(url = str_glue(&quot;https://www.radon-bikes.de{url}&quot;))
+
+temp_url &lt;- temp_url$url[1]
+xopen(temp_url)</code></pre>
+<pre><code>## Running cmd /c start &quot;\&quot;\&quot;&quot; /b \
+##   &quot;https://www.radon-bikes.de/mountainbike/hardtail/bikegrid/&quot;</code></pre>
+<pre class="r"><code>bike_category_grid_html &lt;- read_html(temp_url)
+
+list_of_product_names &lt;- bike_category_grid_html%&gt;%
+  html_nodes(css=&quot;.m-bikegrid__info &gt; a &gt; div &gt; h4&quot;)%&gt;%
+  html_text%&gt;%
+  stringr::str_replace_all(pattern = &quot;\n&quot;,&quot;&quot;)%&gt;%
+  stringr::str_replace_all(pattern = &quot;  &quot;,&quot;&quot;)%&gt;%
+  enframe(name = NULL, value = &quot;NAME&quot;)
+
+
+
+list_of_product_prices &lt;- bike_category_grid_html%&gt;%
+  html_nodes(css=&quot;.m-bikegrid__price--active&quot;)%&gt;%
+  html_text()%&gt;%
+  stringr::str_extract(pattern = &quot;[0-9€]+&quot;)%&gt;%
+  stringr::str_replace(pattern = &quot;€&quot;,&quot;&quot;)%&gt;%
+  as.numeric()%&gt;%
+  enframe(name = NULL, value = &quot;PRICE&quot;)
+
+list_of_product_prices = na.omit(list_of_product_prices)</code></pre>
 </div>
-</div>
-<div id="my-second-post-note-the-order" class="section level1">
-<h1><span class="header-section-number">2</span> My second post (note the order)</h1>
-<p>Last compiled: 2020-12-06</p>
-<p>I’m writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom</p>
-</div>
-<div id="assignment-1" class="section level1">
-<h1><span class="header-section-number">3</span> Assignment 1</h1>
+<div id="assignment-3" class="section level1">
+<h1><span class="header-section-number">3</span> Assignment 3</h1>
 <p>So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place.</p>
 <p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
 <pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
 hist(samples)</code></pre>
-<p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="journal_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
 </div>
 

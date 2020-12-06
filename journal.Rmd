@@ -20,11 +20,94 @@ knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
 
 This is an `.Rmd` file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a \# in front of your text, it will create a top level-header.
 
-# My first post
+# Assingment 1
 
 Last compiled: `r Sys.Date()`
 
 Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left. 
+
+```{r}
+# Data Science at TUHH ------------------------------------------------------
+# SALES ANALYSIS ----
+# P1
+
+#libraries ----
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library("writexl")
+
+# Importing Files ----
+bikes_tbl      <- read_excel("bikes.xlsx")
+orderlines_tbl <- read_excel("orderlines.xlsx")
+bikeshops_tbl <- read_excel("bikeshops.xlsx")
+
+# Examining Data ----
+View(orderlines_tbl)
+View(bikeshops_tbl)
+View(bikes_tbl)
+
+# Joining Data ----
+bike_orderlines_joined_tbl <- orderlines_tbl %>% left_join(bikes_tbl, by = c("product.id" = "bike.id")) %>% left_join(bikeshops_tbl, by = c("customer.id" = "bikeshop.id"))
+
+# Wrangling Data ----
+bike_orderlines_wrangled_tbl <- bike_orderlines_joined_tbl %>% separate(col    = location, into   = c("city", "State"), sep    = ",") %>% 
+mutate(total.price = price * quantity) %>% rename(bikeshop = name) %>% set_names(names(.) %>% str_replace_all("\\.", "_"))
+
+# Business Insights ----
+
+# Sales by State ----
+
+# 1 - Manipulate
+sales_by_state_tbl <- bike_orderlines_wrangled_tbl %>% select(State, total_price) %>% group_by(State) %>% summarize(sales = sum(total_price)) %>%
+mutate(sales_text = scales::dollar(sales, big.mark = ".", decimal.mark = ",", prefix = "", suffix = " €"))
+View(sales_by_state_tbl)
+
+sales_by_city_tbl <- bike_orderlines_wrangled_tbl %>% select(city, total_price) %>% group_by(city) %>% summarize(sales = sum(total_price)) %>%
+mutate(sales_text = scales::dollar(sales, big.mark = ".", decimal.mark = ",", prefix = "", suffix = " €"))
+View(sales_by_city_tbl)
+
+# 2 - Visualize
+
+
+sales_by_state_tbl %>%
+ggplot(aes(x = State, y = sales)) +
+geom_col(fill = "#2DC6D6") + 
+geom_label(aes(label = sales_text)) +
+geom_smooth(method = "lm", se = FALSE) + 
+scale_y_continuous(labels = scales::dollar_format(big.mark = ".", decimal.mark = ",", prefix = "", suffix = " €")) +
+labs(title    = "Revenue by state", subtitle = "Upward Trend", x = "", y = "Revenue")+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+sales_by_city_tbl %>%
+ggplot(aes(x = city, y = sales)) +
+geom_col(fill = "#2DC6D6") + 
+geom_label(aes(label = sales_text)) +
+geom_smooth(method = "lm", se = FALSE) + 
+scale_y_continuous(labels = scales::dollar_format(big.mark = ".", decimal.mark = ",", prefix = "", suffix = " €")) +
+labs(title    = "Revenue by city", subtitle = "Upward Trend", x = "", y = "Revenue")+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# Sales by Year and location ----
+
+# 1 - Manipulate
+sales_by_location_year_tbl <- bike_orderlines_wrangled_tbl %>% select(State, order_date, total_price) %>%  mutate(year = year(order_date)) %>%
+group_by(State ,year) %>% summarize(sales = sum(total_price)) %>% mutate(sales_text = scales::dollar(sales, big.mark = ".", decimal.mark = ",", prefix = "", suffix = " €"))
+View(sales_by_location_year_tbl)
+
+# 2 - Visualize
+sales_by_location_year_tbl %>%
+ggplot(aes(x = year, y = sales)) +
+geom_col(fill = "#2DC6D6") + 
+geom_label(aes(label = sales_text)) +
+geom_smooth(method = "lm", se = FALSE) + 
+scale_y_continuous(labels = scales::dollar_format(big.mark = ".", decimal.mark = ",", prefix = "", suffix = " €")) +
+labs(title    = "Revenue by state and year", subtitle = "Upward Trend", x = "", y = "Revenue")+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+facet_wrap(vars(State))
+```
 
 ## Second level header
 
@@ -35,7 +118,6 @@ You can add more headers by adding more hashtags. These won't be put into the ta
 Here's an even lower level header
 
 # My second post (note the order)
-
 Last compiled: `r Sys.Date()`
 
 I'm writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom

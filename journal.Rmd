@@ -16,20 +16,27 @@ output:
 knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
 ```
 
-**IMPORTANT:** You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.
+**Welcome to Pradnil's Site** 
 
-This is an `.Rmd` file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a \# in front of your text, it will create a top level-header.
+*Checklist of completed tasks*
+
+Assignment 1: Challenge 1 *Completed*
+
+Assignment 2: Challenge 2 *Completed*
+
+Assignment 3: Challenge 3 *incomplete*
+
+Assignment 4: Challenge 4.1 and Challenge 4.2 *Completed*
 
 # Assingment 1
-
 Last compiled: `r Sys.Date()`
 
+Goal:
 
-Things to do: 
-
-1) Analyze the sales by location (state) with a bar plot. Since state and city are multiple features (variables), they should be split. Which state has the highes revenue? Replace your bike_orderlines_wrangled_tbl object with the newly wrangled object (with the columns state and city).
-
-2)Analyze the sales by location and year (facet_wrap). Because there are 12 states with bike stores, you should get 12 plots.
+1) Analyze the sales by location (state) with a bar plot. 
+2) Since state and city are multiple features (variables), they should be split. 
+3) Which state has the highes revenue? Replace your bike_orderlines_wrangled_tbl object with the newly wrangled object (with the columns state and city).
+4) Analyze the sales by location and year (facet_wrap). Because there are 12 states with bike stores, you should get 12 plots.
 
 ```{r}
 # Data Science at TUHH ------------------------------------------------------
@@ -72,7 +79,7 @@ sales_by_city_tbl <- bike_orderlines_wrangled_tbl %>% select(city, total_price) 
 mutate(sales_text = scales::dollar(sales, big.mark = ".", decimal.mark = ",", prefix = "", suffix = " €"))
 View(sales_by_city_tbl)
 
-# 2 - Visualize
+# Visualize
 
 
 sales_by_state_tbl %>%
@@ -95,14 +102,14 @@ labs(title    = "Revenue by city", subtitle = "Upward Trend", x = "", y = "Reven
 theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
-# Sales by Year and location ----
+# Sales as per Year and location ----
 
-# 1 - Manipulate
+# Manipulate
 sales_by_location_year_tbl <- bike_orderlines_wrangled_tbl %>% select(State, order_date, total_price) %>%  mutate(year = year(order_date)) %>%
 group_by(State ,year) %>% summarize(sales = sum(total_price)) %>% mutate(sales_text = scales::dollar(sales, big.mark = ".", decimal.mark = ",", prefix = "", suffix = " €"))
 View(sales_by_location_year_tbl)
 
-# 2 - Visualize
+# Visualize
 sales_by_location_year_tbl %>%
 ggplot(aes(x = year, y = sales)) +
 geom_col(fill = "#2DC6D6") + 
@@ -118,6 +125,11 @@ facet_wrap(vars(State))
 
 # Assignment 2
 
+GOal:
+
+1) Get some data via an API.
+2) Scrape one of the competitor websites of canyon (https://www.radon-bikes.de) and create a small database.
+3)The database should contain the model names and prices for at least one category. Use the selectorgadget to get a good understanding of the website structure.
 
 ```{r}
 library(tidyverse) 
@@ -207,10 +219,10 @@ class(covid_data_tbl)
 colnames(covid_data_tbl)
 str(covid_data_tbl)
 
-#check the unique country present.
+#check: unique country
 unique(covid_data_tbl$countriesAndTerritories)
 
-#getting month name column
+#get: month name column
 covid_data_tbl$month_name<-months(as.Date(covid_data_tbl$dateRep))
 
 ##rolling up data to month year country Level
@@ -219,19 +231,19 @@ covid_mon_yr_country_lvl <- covid_data_tbl %>%
   dplyr::summarise(cases = sum(cases, na.rm = T)) %>% 
   dplyr::ungroup()
 
-##creating Cummulative Cases column
+##generating Cummulative Cases column
 covid_mon_yr_country_lvl <- covid_mon_yr_country_lvl %>% 
   dplyr::arrange(countriesAndTerritories,year,month) %>% 
   dplyr::group_by(countriesAndTerritories) %>% 
   dplyr::mutate(cumulative_cases = cumsum(cases)) %>% 
   dplyr::ungroup()
 
-##I am filtering only for those shown in the graph and for the year = 2020
+##filtering  for the year = 2020
 covid_mon_yr_country_lvl_fil<- covid_mon_yr_country_lvl %>% 
   dplyr::filter(countriesAndTerritories %in% c("Germany","Spain","France","United_Kingdom","United_States_of_America")& year == 2020) %>%
   dplyr::rename('Continent_Country' = countriesAndTerritories)
 
-#Graph using ggploat
+#Graph ggplot
 covid_mon_yr_country_lvl_fil %>% 
   mutate(label = if_else(month_name == "December",as.character(cumulative_cases),NA_character_)) %>% 
   ggplot(aes(x=month,y =cumulative_cases))+
@@ -300,3 +312,5 @@ plot_data %>% ggplot()+
   expand_limits(x= world$long,y=world$lat)+
   labs(x="",y="",title="Confirmed COVID-19 deaths relative to the size of population")
 ```
+
+**Thank you**

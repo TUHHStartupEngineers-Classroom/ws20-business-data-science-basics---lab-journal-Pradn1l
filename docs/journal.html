@@ -410,16 +410,22 @@ div.tocify {
 </div>
 
 
-<p><strong>IMPORTANT:</strong> You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.</p>
-<p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
+<p><strong>Welcome to Pradnil’s Site</strong></p>
+<p><em>Checklist of completed tasks</em></p>
+<p>Assignment 1: Challenge 1 <em>Completed</em></p>
+<p>Assignment 2: Challenge 2 <em>Completed</em></p>
+<p>Assignment 3: Challenge 3 <em>incomplete</em></p>
+<p>Assignment 4: Challenge 4.1 and Challenge 4.2 <em>Completed</em></p>
 <div id="assingment-1" class="section level1">
 <h1><span class="header-section-number">1</span> Assingment 1</h1>
 <p>Last compiled: 2020-12-06</p>
-<p>Things to do:</p>
+<p>Goal:</p>
 <ol style="list-style-type: decimal">
-<li>Analyze the sales by location (state) with a bar plot. Since state and city are multiple features (variables), they should be split. Which state has the highes revenue? Replace your bike_orderlines_wrangled_tbl object with the newly wrangled object (with the columns state and city).</li>
+<li>Analyze the sales by location (state) with a bar plot.</li>
+<li>Since state and city are multiple features (variables), they should be split.</li>
+<li>Which state has the highes revenue? Replace your bike_orderlines_wrangled_tbl object with the newly wrangled object (with the columns state and city).</li>
+<li>Analyze the sales by location and year (facet_wrap). Because there are 12 states with bike stores, you should get 12 plots.</li>
 </ol>
-<p>2)Analyze the sales by location and year (facet_wrap). Because there are 12 states with bike stores, you should get 12 plots.</p>
 <pre class="r"><code># Data Science at TUHH ------------------------------------------------------
 # SALES ANALYSIS ----
 # P1x
@@ -460,7 +466,7 @@ sales_by_city_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;% select(city, total_p
 mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;))
 View(sales_by_city_tbl)
 
-# 2 - Visualize
+# Visualize
 
 
 sales_by_state_tbl %&gt;%
@@ -481,14 +487,14 @@ scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, deci
 labs(title    = &quot;Revenue by city&quot;, subtitle = &quot;Upward Trend&quot;, x = &quot;&quot;, y = &quot;Revenue&quot;)+
 theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
 <p><img src="journal_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
-<pre class="r"><code># Sales by Year and location ----
+<pre class="r"><code># Sales as per Year and location ----
 
-# 1 - Manipulate
+# Manipulate
 sales_by_location_year_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;% select(State, order_date, total_price) %&gt;%  mutate(year = year(order_date)) %&gt;%
 group_by(State ,year) %&gt;% summarize(sales = sum(total_price)) %&gt;% mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;))
 View(sales_by_location_year_tbl)
 
-# 2 - Visualize
+# Visualize
 sales_by_location_year_tbl %&gt;%
 ggplot(aes(x = year, y = sales)) +
 geom_col(fill = &quot;#2DC6D6&quot;) + 
@@ -502,6 +508,11 @@ facet_wrap(vars(State))</code></pre>
 </div>
 <div id="assignment-2" class="section level1">
 <h1><span class="header-section-number">2</span> Assignment 2</h1>
+<p>GOal:</p>
+<ol style="list-style-type: decimal">
+<li>Get some data via an API.</li>
+<li>Scrape one of the competitor websites of canyon (<a href="https://www.radon-bikes.de" class="uri">https://www.radon-bikes.de</a>) and create a small database. 3)The database should contain the model names and prices for at least one category. Use the selectorgadget to get a good understanding of the website structure.</li>
+</ol>
 <pre class="r"><code>library(tidyverse) 
 library(rvest)    
 library(xopen)    
@@ -610,7 +621,7 @@ class(covid_data_tbl)</code></pre>
 ##  $ continentExp                                              : chr  &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; ...
 ##  $ Cumulative_number_for_14_days_of_COVID-19_cases_per_100000: num  7.33 7.12 7.11 7.54 7.01 ...
 ##  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;</code></pre>
-<pre class="r"><code>#check the unique country present.
+<pre class="r"><code>#check: unique country
 unique(covid_data_tbl$countriesAndTerritories)</code></pre>
 <pre><code>##   [1] &quot;Afghanistan&quot;                               
 ##   [2] &quot;Albania&quot;                                   
@@ -826,7 +837,7 @@ unique(covid_data_tbl$countriesAndTerritories)</code></pre>
 ## [212] &quot;Yemen&quot;                                     
 ## [213] &quot;Zambia&quot;                                    
 ## [214] &quot;Zimbabwe&quot;</code></pre>
-<pre class="r"><code>#getting month name column
+<pre class="r"><code>#get: month name column
 covid_data_tbl$month_name&lt;-months(as.Date(covid_data_tbl$dateRep))
 
 ##rolling up data to month year country Level
@@ -835,19 +846,19 @@ covid_mon_yr_country_lvl &lt;- covid_data_tbl %&gt;%
   dplyr::summarise(cases = sum(cases, na.rm = T)) %&gt;% 
   dplyr::ungroup()
 
-##creating Cummulative Cases column
+##generating Cummulative Cases column
 covid_mon_yr_country_lvl &lt;- covid_mon_yr_country_lvl %&gt;% 
   dplyr::arrange(countriesAndTerritories,year,month) %&gt;% 
   dplyr::group_by(countriesAndTerritories) %&gt;% 
   dplyr::mutate(cumulative_cases = cumsum(cases)) %&gt;% 
   dplyr::ungroup()
 
-##I am filtering only for those shown in the graph and for the year = 2020
+##filtering  for the year = 2020
 covid_mon_yr_country_lvl_fil&lt;- covid_mon_yr_country_lvl %&gt;% 
   dplyr::filter(countriesAndTerritories %in% c(&quot;Germany&quot;,&quot;Spain&quot;,&quot;France&quot;,&quot;United_Kingdom&quot;,&quot;United_States_of_America&quot;)&amp; year == 2020) %&gt;%
   dplyr::rename(&#39;Continent_Country&#39; = countriesAndTerritories)
 
-#Graph using ggploat
+#Graph ggplot
 covid_mon_yr_country_lvl_fil %&gt;% 
   mutate(label = if_else(month_name == &quot;December&quot;,as.character(cumulative_cases),NA_character_)) %&gt;% 
   ggplot(aes(x=month,y =cumulative_cases))+
@@ -912,6 +923,7 @@ plot_data %&gt;% ggplot()+
   expand_limits(x= world$long,y=world$lat)+
   labs(x=&quot;&quot;,y=&quot;&quot;,title=&quot;Confirmed COVID-19 deaths relative to the size of population&quot;)</code></pre>
 <p><img src="journal_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><strong>Thank you</strong></p>
 </div>
 </div>
 

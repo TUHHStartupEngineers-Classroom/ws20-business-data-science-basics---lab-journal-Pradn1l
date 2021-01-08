@@ -414,11 +414,11 @@ div.tocify {
 <p><em>Checklist of completed tasks</em></p>
 <p>Assignment 1: Challenge 1 <em>Completed</em></p>
 <p>Assignment 2: Challenge 2 <em>Completed</em></p>
-<p>Assignment 3: Challenge 3 <em>incomplete</em> Comments about 3rd: I was able to build the logic for the code and I have the code too, however everytime I ran it my Rstudio crashed, so I was unable to attach it to the journal</p>
+<p>Assignment 3: Challenge 3 <em>completed</em></p>
 <p>Assignment 4: Challenge 4.1 and Challenge 4.2 <em>Completed</em></p>
-<div id="assingment-1" class="section level1">
-<h1><span class="header-section-number">1</span> Assingment 1</h1>
-<p>Last compiled: 2020-12-06</p>
+<div id="assingment" class="section level1">
+<h1><span class="header-section-number">1</span> Assingment</h1>
+<p>Last compiled: 2021-01-08</p>
 <p>Goal:</p>
 <ol style="list-style-type: decimal">
 <li>Analyze the sales by location (state) with a bar plot.</li>
@@ -435,6 +435,7 @@ library(tidyverse)
 library(readxl)
 library(lubridate)
 library(&quot;writexl&quot;)
+library(ggplot2)
 
 # Importing Files ----
 bikes_tbl      &lt;- read_excel(&quot;bikes.xlsx&quot;)
@@ -506,8 +507,33 @@ theme(axis.text.x = element_text(angle = 45, hjust = 1))+
 facet_wrap(vars(State))</code></pre>
 <p><img src="journal_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
 </div>
-<div id="assignment-2" class="section level1">
-<h1><span class="header-section-number">2</span> Assignment 2</h1>
+<div id="assingment-data-acquisition" class="section level1">
+<h1><span class="header-section-number">2</span> Assingment: Data Acquisition</h1>
+<div id="challenge-1.-requesting-data-from-api" class="section level2">
+<h2><span class="header-section-number">2.1</span> Challenge 1. Requesting data from API</h2>
+<p>This piece of code is used to request weather data from provider named “7timer”</p>
+<pre class="r"><code>library(httr)
+resp &lt;- GET(&quot;http://www.7timer.info/bin/api.pl?lon=113.17&amp;lat=23.09&amp;product=astro&amp;output=json&quot;)
+resp</code></pre>
+<pre><code>## Response [http://www.7timer.info/bin/astro.php?lon=113.2&amp;lat=23.1&amp;ac=0&amp;unit=metric&amp;output=json&amp;tzshift=0]
+##   Date: 2021-01-08 16:49
+##   Status: 200
+##   Content-Type: text/html; charset=UTF-8
+##   Size: 5.35 kB
+## {
+##  &quot;product&quot; : &quot;astro&quot; ,
+##  &quot;init&quot; : &quot;2021010812&quot; ,
+##  &quot;dataseries&quot; : [
+##  {
+##      &quot;timepoint&quot; : 3,
+##      &quot;cloudcover&quot; : 9,
+##      &quot;seeing&quot; : 7,
+##      &quot;transparency&quot; : 1,
+##      &quot;lifted_index&quot; : 15,
+## ...</code></pre>
+</div>
+<div id="challenge-2" class="section level2">
+<h2><span class="header-section-number">2.2</span> Challenge 2</h2>
 <p>GOal:</p>
 <ol style="list-style-type: decimal">
 <li>Get some data via an API.</li>
@@ -571,16 +597,141 @@ list_of_product_prices &lt;- bike_category_grid_html%&gt;%
   as.numeric()%&gt;%
   enframe(name = NULL, value = &quot;PRICE&quot;)
 
-list_of_product_prices = na.omit(list_of_product_prices)</code></pre>
+list_of_product_prices = na.omit(list_of_product_prices)
+
+bike_df &lt;- data.frame(list_of_product_names,list_of_product_prices)
+saveRDS(bike_df, &quot;bike_data.rds&quot;)
+head(bike_df,10)</code></pre>
+<pre><code>##                        NAME PRICE
+## 1               JEALOUS 8.0  2599
+## 2               JEALOUS 9.0  2999
+## 3              JEALOUS 10.0  3999
+## 4           JEALOUS 10.0 EA  5299
+## 5  NEW JEALOUS SUPERLITE 1X   999
+## 6            JEALOUS AL 8.0   999
+## 7         JEALOUS AL 8.0 HD  1299
+## 8            JEALOUS AL 9.0  1499
+## 9           JEALOUS AL 10.0  1799
+## 10       JEALOUS AL 10.0 SL  1999</code></pre>
 </div>
-<div id="assignment-3" class="section level1">
-<h1><span class="header-section-number">3</span> Assignment 3</h1>
-<p><strong>Comments</strong> about 3rd: I was able to build the logic for the code and I have the code too, however everytime I ran it my Rstudio crashed, so I was unable to attach it to the journal.</p>
-<p>The best I could was truncate the Assingmnet 3 from my journal for better performance.</p>
-<p>I have the code which I could provide through mail.</p>
 </div>
-<div id="assignment-4" class="section level1">
-<h1><span class="header-section-number">4</span> Assignment 4</h1>
+<div id="assignment" class="section level1">
+<h1><span class="header-section-number">3</span> Assignment</h1>
+<pre class="r"><code>library(vroom)
+library(data.table)
+library(tidyverse)
+library(lubridate)
+
+col_types &lt;- list(
+  id = col_character(),
+  type = col_character(),
+  organization = col_character()
+)
+
+assignee_tbl &lt;- vroom(
+  file       = &quot;assignee.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+col_types &lt;- list(
+  patent_id = col_character(),
+  assignee_id = col_character()
+)
+
+patent_assignee_tbl &lt;- vroom(
+  file       = &quot;patent_assignee.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+Join_tbl &lt;- merge(patent_assignee_tbl,assignee_tbl, by.x = &quot;assignee_id&quot;, by.y = &quot;id&quot;) 
+
+num_tbl&lt;- Join_tbl%&gt;%
+  select(patent_id,organization)%&gt;% 
+  count(organization)%&gt;%
+  group_by(organization) 
+
+final_tbl &lt;- num_tbl %&gt;%
+  select (organization,n)%&gt;%
+  arrange(desc(n))
+
+#List of top ten companies with most assigned/granted patents.
+
+head(final_tbl,10)</code></pre>
+<pre><code>## # A tibble: 10 x 2
+## # Groups:   organization [10]
+##    organization                                    n
+##    &lt;chr&gt;                                       &lt;int&gt;
+##  1 International Business Machines Corporation  7547
+##  2 Samsung Electronics Co., Ltd.                5835
+##  3 Canon Kabushiki Kaisha                       4099
+##  4 Sony Corporation                             3326
+##  5 Microsoft Corporation                        3165
+##  6 Google Inc.                                  2668
+##  7 Kabushiki Kaisha Toshiba                     2656
+##  8 QUALCOMM Incorporated                        2597
+##  9 LG Electronics Inc.                          2459
+## 10 &lt;NA&gt;                                         2377</code></pre>
+<pre class="r"><code># List the top 10 companies with the most new granted patents for 2019.
+
+col_types &lt;- list(
+  id = col_character(),
+  date = col_date(&quot;%Y-%m-%d&quot;),
+  num_claims = col_double()
+)
+
+patent_tbl &lt;- vroom(
+  file       = &quot;patent.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+Join_tbl &lt;- merge(patent_assignee_tbl,assignee_tbl, by.x = &quot;assignee_id&quot;, by.y = &quot;id&quot;) 
+Join_1_tbl &lt;- merge(patent_tbl,Join_tbl, by.x=&quot;id&quot;, by.y =&quot;patent_id&quot;) 
+
+Filter_2019_tbl &lt;- Join_1_tbl %&gt;%
+  select(&quot;id&quot;, &quot;date&quot;,&quot;organization&quot;)%&gt;%
+  filter(between(date,as.Date(&quot;2019-01-01&quot;), as.Date(&quot;2020-01-01&quot;)))%&gt;%
+  count(organization)%&gt;%
+  group_by(organization)    
+
+
+
+Final_tbl &lt;- Filter_2019_tbl %&gt;%
+  select (organization,n)%&gt;%
+  arrange(desc(n))
+
+#list of 10 organisation 
+
+head(Final_tbl,10)</code></pre>
+<pre><code>## # A tibble: 0 x 2
+## # Groups:   organization [0]
+## # ... with 2 variables: organization &lt;chr&gt;, n &lt;int&gt;</code></pre>
+<pre class="r"><code># list of the top 10 companies (worldwide) with the most patents. The top 5 USPTO tech main classes
+
+col_types &lt;- list(
+  patent_id = col_character(),
+  mainclass_id = col_character(),
+  sequence = col_character()
+  
+)
+
+uspc_tbl &lt;- vroom(
+  file       = &quot;uspc.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+Join_tbl &lt;- merge(patent_assignee_tbl,assignee_tbl, by.x = &quot;assignee_id&quot;, by.y = &quot;id&quot;) 
+Join_tbl_3 &lt;- merge(Join_tbl,uspc_tbl, by = &quot;patent_id&quot;)</code></pre>
+</div>
+<div id="assignment-1" class="section level1">
+<h1><span class="header-section-number">4</span> Assignment</h1>
 <div id="challenge-1" class="section level2">
 <h2><span class="header-section-number">4.1</span> challenge 1</h2>
 <p>Goal: Map the time course of the cumulative Covid-19 cases! Your plot should look like this:</p>
@@ -591,38 +742,8 @@ library(ggrepel)
 url &lt;- &quot;https://opendata.ecdc.europa.eu/covid19/casedistribution/csv&quot;
 covid_data_tbl &lt;- fread(url)
 
-class(covid_data_tbl)</code></pre>
-<pre><code>## [1] &quot;data.table&quot; &quot;data.frame&quot;</code></pre>
-<pre class="r"><code>colnames(covid_data_tbl)</code></pre>
-<pre><code>##  [1] &quot;dateRep&quot;                                                   
-##  [2] &quot;day&quot;                                                       
-##  [3] &quot;month&quot;                                                     
-##  [4] &quot;year&quot;                                                      
-##  [5] &quot;cases&quot;                                                     
-##  [6] &quot;deaths&quot;                                                    
-##  [7] &quot;countriesAndTerritories&quot;                                   
-##  [8] &quot;geoId&quot;                                                     
-##  [9] &quot;countryterritoryCode&quot;                                      
-## [10] &quot;popData2019&quot;                                               
-## [11] &quot;continentExp&quot;                                              
-## [12] &quot;Cumulative_number_for_14_days_of_COVID-19_cases_per_100000&quot;</code></pre>
-<pre class="r"><code>str(covid_data_tbl)</code></pre>
-<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   60196 obs. of  12 variables:
-##  $ dateRep                                                   : chr  &quot;06/12/2020&quot; &quot;05/12/2020&quot; &quot;04/12/2020&quot; &quot;03/12/2020&quot; ...
-##  $ day                                                       : int  6 5 4 3 2 1 30 29 28 27 ...
-##  $ month                                                     : int  12 12 12 12 12 12 11 11 11 11 ...
-##  $ year                                                      : int  2020 2020 2020 2020 2020 2020 2020 2020 2020 2020 ...
-##  $ cases                                                     : int  234 235 119 202 400 272 0 228 214 0 ...
-##  $ deaths                                                    : int  10 18 5 19 48 11 0 11 15 0 ...
-##  $ countriesAndTerritories                                   : chr  &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; ...
-##  $ geoId                                                     : chr  &quot;AF&quot; &quot;AF&quot; &quot;AF&quot; &quot;AF&quot; ...
-##  $ countryterritoryCode                                      : chr  &quot;AFG&quot; &quot;AFG&quot; &quot;AFG&quot; &quot;AFG&quot; ...
-##  $ popData2019                                               : int  38041757 38041757 38041757 38041757 38041757 38041757 38041757 38041757 38041757 38041757 ...
-##  $ continentExp                                              : chr  &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; ...
-##  $ Cumulative_number_for_14_days_of_COVID-19_cases_per_100000: num  7.33 7.12 7.11 7.54 7.01 ...
-##  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;</code></pre>
-<pre class="r"><code>#check: unique country
-unique(covid_data_tbl$countriesAndTerritories)</code></pre>
+#check the unique country present.
+covid_data_tbl$countriesAndTerritories %&gt;% unique()</code></pre>
 <pre><code>##   [1] &quot;Afghanistan&quot;                               
 ##   [2] &quot;Albania&quot;                                   
 ##   [3] &quot;Algeria&quot;                                   
@@ -837,33 +958,62 @@ unique(covid_data_tbl$countriesAndTerritories)</code></pre>
 ## [212] &quot;Yemen&quot;                                     
 ## [213] &quot;Zambia&quot;                                    
 ## [214] &quot;Zimbabwe&quot;</code></pre>
-<pre class="r"><code>#get: month name column
+<pre class="r"><code>class(covid_data_tbl)</code></pre>
+<pre><code>## [1] &quot;data.table&quot; &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>colnames(covid_data_tbl)</code></pre>
+<pre><code>##  [1] &quot;dateRep&quot;                                        
+##  [2] &quot;year_week&quot;                                      
+##  [3] &quot;cases_weekly&quot;                                   
+##  [4] &quot;deaths_weekly&quot;                                  
+##  [5] &quot;countriesAndTerritories&quot;                        
+##  [6] &quot;geoId&quot;                                          
+##  [7] &quot;countryterritoryCode&quot;                           
+##  [8] &quot;popData2019&quot;                                    
+##  [9] &quot;continentExp&quot;                                   
+## [10] &quot;notification_rate_per_100000_population_14-days&quot;</code></pre>
+<pre class="r"><code>str(covid_data_tbl)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   9577 obs. of  10 variables:
+##  $ dateRep                                        : chr  &quot;04/01/2021&quot; &quot;28/12/2020&quot; &quot;21/12/2020&quot; &quot;14/12/2020&quot; ...
+##  $ year_week                                      : chr  &quot;2020-53&quot; &quot;2020-52&quot; &quot;2020-51&quot; &quot;2020-50&quot; ...
+##  $ cases_weekly                                   : int  902 1994 740 1757 1672 1073 1368 1164 606 800 ...
+##  $ deaths_weekly                                  : int  60 88 111 71 137 68 69 61 24 27 ...
+##  $ countriesAndTerritories                        : chr  &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; ...
+##  $ geoId                                          : chr  &quot;AF&quot; &quot;AF&quot; &quot;AF&quot; &quot;AF&quot; ...
+##  $ countryterritoryCode                           : chr  &quot;AFG&quot; &quot;AFG&quot; &quot;AFG&quot; &quot;AFG&quot; ...
+##  $ popData2019                                    : int  38041757 38041757 38041757 38041757 38041757 38041757 38041757 38041757 38041757 38041757 ...
+##  $ continentExp                                   : chr  &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; ...
+##  $ notification_rate_per_100000_population_14-days: num  7.61 7.19 6.56 9.01 7.22 6.42 6.66 4.65 3.7 3.77 ...
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;</code></pre>
+<pre class="r"><code>#getting month name column
 covid_data_tbl$month_name&lt;-months(as.Date(covid_data_tbl$dateRep))
+
+covid_data_tbl$month&lt;-month(as.POSIXlt(covid_data_tbl$dateRep,format=&quot;%d/%m/%Y&quot;))
+covid_data_tbl$year&lt;-year(as.POSIXlt(covid_data_tbl$dateRep,format=&quot;%d/%m/%Y&quot;))
 
 ##rolling up data to month year country Level
 covid_mon_yr_country_lvl &lt;- covid_data_tbl %&gt;% 
   dplyr::group_by(month,month_name,year,countriesAndTerritories,geoId,countryterritoryCode,continentExp) %&gt;% 
-  dplyr::summarise(cases = sum(cases, na.rm = T)) %&gt;% 
+  dplyr::summarise(cases = sum(cases_weekly, na.rm = T)) %&gt;% 
   dplyr::ungroup()
 
-##generating Cummulative Cases column
+##creating Cummulative Cases column
 covid_mon_yr_country_lvl &lt;- covid_mon_yr_country_lvl %&gt;% 
   dplyr::arrange(countriesAndTerritories,year,month) %&gt;% 
   dplyr::group_by(countriesAndTerritories) %&gt;% 
   dplyr::mutate(cumulative_cases = cumsum(cases)) %&gt;% 
   dplyr::ungroup()
 
-##filtering  for the year = 2020
+##Filtering only for those shown in the graph and for the year = 2020
 covid_mon_yr_country_lvl_fil&lt;- covid_mon_yr_country_lvl %&gt;% 
   dplyr::filter(countriesAndTerritories %in% c(&quot;Germany&quot;,&quot;Spain&quot;,&quot;France&quot;,&quot;United_Kingdom&quot;,&quot;United_States_of_America&quot;)&amp; year == 2020) %&gt;%
   dplyr::rename(&#39;Continent_Country&#39; = countriesAndTerritories)
 
-#Graph ggplot
+#Graph using ggploat
 covid_mon_yr_country_lvl_fil %&gt;% 
   mutate(label = if_else(month_name == &quot;December&quot;,as.character(cumulative_cases),NA_character_)) %&gt;% 
   ggplot(aes(x=month,y =cumulative_cases))+
   geom_line(aes(color = Continent_Country))+
-  scale_colour_brewer(palette = &quot;Set3&quot;)+
+  scale_colour_brewer(palette = &quot;Set1&quot;)+
   scale_x_continuous(breaks=covid_mon_yr_country_lvl_fil$month,labels = covid_mon_yr_country_lvl_fil$month_name)+
   scale_y_continuous(labels = scales::dollar_format(scale = 1/1e6,
                                                     prefix = &quot;&quot;,
@@ -877,11 +1027,49 @@ covid_mon_yr_country_lvl_fil %&gt;%
         axis.text.x = element_text(angle=45,hjust = 1))+
   geom_label_repel(aes(label=label),
                    nudge_x = 1,na.rm = TRUE)</code></pre>
-<p><img src="journal_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="journal_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>covid_data_tbl %&gt;% dplyr::filter(continentExp == &quot;Europe&quot;)</code></pre>
+<pre><code>##          dateRep year_week cases_weekly deaths_weekly countriesAndTerritories
+##    1: 04/01/2021   2020-53         2866            29                 Albania
+##    2: 28/12/2020   2020-52         3569            76                 Albania
+##    3: 21/12/2020   2020-51         4473            85                 Albania
+##    4: 14/12/2020   2020-50         5542            98                 Albania
+##    5: 07/12/2020   2020-49         5363           107                 Albania
+##   ---                                                                        
+## 2666: 03/02/2020   2020-05            2             0          United_Kingdom
+## 2667: 27/01/2020   2020-04            0             0          United_Kingdom
+## 2668: 20/01/2020   2020-03            0             0          United_Kingdom
+## 2669: 13/01/2020   2020-02            0             0          United_Kingdom
+## 2670: 06/01/2020   2020-01            0             0          United_Kingdom
+##       geoId countryterritoryCode popData2019 continentExp
+##    1:    AL                  ALB     2862427       Europe
+##    2:    AL                  ALB     2862427       Europe
+##    3:    AL                  ALB     2862427       Europe
+##    4:    AL                  ALB     2862427       Europe
+##    5:    AL                  ALB     2862427       Europe
+##   ---                                                    
+## 2666:    UK                  GBR    66647112       Europe
+## 2667:    UK                  GBR    66647112       Europe
+## 2668:    UK                  GBR    66647112       Europe
+## 2669:    UK                  GBR    66647112       Europe
+## 2670:    UK                  GBR    66647112       Europe
+##       notification_rate_per_100000_population_14-days month_name month year
+##    1:                                          224.81    January     1 2021
+##    2:                                          280.95   December    12 2020
+##    3:                                          349.88   December    12 2020
+##    4:                                          380.97   December    12 2020
+##    5:                                          357.28   December    12 2020
+##   ---                                                                      
+## 2666:                                            0.00   February     2 2020
+## 2667:                                            0.00    January     1 2020
+## 2668:                                            0.00    January     1 2020
+## 2669:                                            0.00    January     1 2020
+## 2670:                                              NA    January     1 2020</code></pre>
+<pre class="r"><code>sum(covid_data_tbl$cases,na.rm = T)</code></pre>
+<pre><code>## [1] 84532824</code></pre>
 </div>
-<div id="challenge-2" class="section level2">
-<h2><span class="header-section-number">4.2</span> challenge 2</h2>
-<p>Goal: Visualize the distribution of the mortality rate (deaths / population) with geom_map(). The necessary longitudinal and lateral data can be accessed with this function:</p>
+<div id="mortality-rate" class="section level2">
+<h2><span class="header-section-number">4.2</span> Mortality rate</h2>
 <pre class="r"><code>library(tidyverse)
 library(data.table)
 library(ggplot2)
@@ -906,6 +1094,8 @@ world_data&lt;- covid_data_tbl %&gt;%
     TRUE ~ countriesAndTerritories
   ))
 
+deaths = world_data$deaths_weekly
+
 options(scipen = 999)
 
 country_mortality_rate&lt;- world_data %&gt;% 
@@ -921,8 +1111,8 @@ plot_data %&gt;% ggplot()+
   geom_map(map = world,aes(map_id = countriesAndTerritories,fill=mortality_rate),color = &quot;#7f7f7f&quot;,size=0.25)+
   scale_fill_gradient(low=&quot;#FF3333&quot;,high = &quot;#330000&quot;,name=&quot;Mortality Rate&quot;)+
   expand_limits(x= world$long,y=world$lat)+
-  labs(x=&quot;&quot;,y=&quot;&quot;,title=&quot;Confirmed COVID-19 deaths relative to the size of population&quot;)</code></pre>
-<p><img src="journal_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+  labs(x=&quot;&quot;,y=&quot;&quot;,title=&quot;Cnfirmed COVID-19 deaths relative to the size of population&quot;)</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p><strong>Thank you</strong></p>
 </div>
 </div>

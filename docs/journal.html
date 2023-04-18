@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Pradnil S Kamble" />
+
+<meta name="date" content="2020-11-28" />
+
+<title>Journal (reproducible report)</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MyLabJournal</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="journal.html">Journal</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Class notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="dictionary.html">Dictionary</a>
+    </li>
+    <li>
+      <a href="data_wrangling.html">Data Wrangling</a>
+    </li>
+    <li>
+      <a href="ggplot_graphs.html">ggplot graphs</a>
+    </li>
+    <li>
+      <a href="machine_learning.html">machine learning</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Journal (reproducible report)</h1>
+<h4 class="author">Pradnil S Kamble</h4>
+<h4 class="date">2020-11-28</h4>
+
+</div>
+
+
+<p><strong>Welcome to Pradnil’s Site</strong></p>
+<p><em>Checklist of completed tasks</em></p>
+<p>Assignment 1: Challenge 1 <em>Completed</em></p>
+<p>Assignment 2: Challenge 2 <em>Completed</em></p>
+<p>Assignment 3: Challenge 3 <em>completed</em></p>
+<p>Assignment 4: Challenge 4.1 and Challenge 4.2 <em>Completed</em></p>
+<div id="assingment" class="section level1">
+<h1><span class="header-section-number">1</span> Assingment</h1>
+<p>Last compiled: 2021-01-08</p>
+<p>Goal:</p>
+<ol style="list-style-type: decimal">
+<li>Analyze the sales by location (state) with a bar plot.</li>
+<li>Since state and city are multiple features (variables), they should be split.</li>
+<li>Which state has the highes revenue? Replace your bike_orderlines_wrangled_tbl object with the newly wrangled object (with the columns state and city).</li>
+<li>Analyze the sales by location and year (facet_wrap). Because there are 12 states with bike stores, you should get 12 plots.</li>
+</ol>
+<pre class="r"><code># Data Science at TUHH ------------------------------------------------------
+# SALES ANALYSIS ----
+# P1x
+
+#libraries ----
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(&quot;writexl&quot;)
+library(ggplot2)
+
+# Importing Files ----
+bikes_tbl      &lt;- read_excel(&quot;bikes.xlsx&quot;)
+orderlines_tbl &lt;- read_excel(&quot;orderlines.xlsx&quot;)
+bikeshops_tbl &lt;- read_excel(&quot;bikeshops.xlsx&quot;)
+
+# Examining Data ----
+View(orderlines_tbl)
+View(bikeshops_tbl)
+View(bikes_tbl)
+
+# Joining Data ----
+bike_orderlines_joined_tbl &lt;- orderlines_tbl %&gt;% left_join(bikes_tbl, by = c(&quot;product.id&quot; = &quot;bike.id&quot;)) %&gt;% left_join(bikeshops_tbl, by = c(&quot;customer.id&quot; = &quot;bikeshop.id&quot;))
+
+# Wrangling Data ----
+bike_orderlines_wrangled_tbl &lt;- bike_orderlines_joined_tbl %&gt;% separate(col    = location, into   = c(&quot;city&quot;, &quot;State&quot;), sep    = &quot;,&quot;) %&gt;% 
+mutate(total.price = price * quantity) %&gt;% rename(bikeshop = name) %&gt;% set_names(names(.) %&gt;% str_replace_all(&quot;\\.&quot;, &quot;_&quot;))
+
+# Business Insights ----
+
+# Sales by State ----
+
+# 1 - Manipulate
+sales_by_state_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;% select(State, total_price) %&gt;% group_by(State) %&gt;% summarize(sales = sum(total_price)) %&gt;%
+mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;))
+View(sales_by_state_tbl)
+
+sales_by_city_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;% select(city, total_price) %&gt;% group_by(city) %&gt;% summarize(sales = sum(total_price)) %&gt;%
+mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;))
+View(sales_by_city_tbl)
+
+# Visualize
+
+
+sales_by_state_tbl %&gt;%
+ggplot(aes(x = State, y = sales)) +
+geom_col(fill = &quot;#2DC6D6&quot;) + 
+geom_label(aes(label = sales_text)) +
+geom_smooth(method = &quot;lm&quot;, se = FALSE) + 
+scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;)) +
+labs(title    = &quot;Revenue by state&quot;, subtitle = &quot;Upward Trend&quot;, x = &quot;&quot;, y = &quot;Revenue&quot;)+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>sales_by_city_tbl %&gt;%
+ggplot(aes(x = city, y = sales)) +
+geom_col(fill = &quot;#2DC6D6&quot;) + 
+geom_label(aes(label = sales_text)) +
+geom_smooth(method = &quot;lm&quot;, se = FALSE) + 
+scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;)) +
+labs(title    = &quot;Revenue by city&quot;, subtitle = &quot;Upward Trend&quot;, x = &quot;&quot;, y = &quot;Revenue&quot;)+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<pre class="r"><code># Sales as per Year and location ----
+
+# Manipulate
+sales_by_location_year_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;% select(State, order_date, total_price) %&gt;%  mutate(year = year(order_date)) %&gt;%
+group_by(State ,year) %&gt;% summarize(sales = sum(total_price)) %&gt;% mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;))
+View(sales_by_location_year_tbl)
+
+# Visualize
+sales_by_location_year_tbl %&gt;%
+ggplot(aes(x = year, y = sales)) +
+geom_col(fill = &quot;#2DC6D6&quot;) + 
+geom_label(aes(label = sales_text)) +
+geom_smooth(method = &quot;lm&quot;, se = FALSE) + 
+scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;, prefix = &quot;&quot;, suffix = &quot; €&quot;)) +
+labs(title    = &quot;Revenue by state and year&quot;, subtitle = &quot;Upward Trend&quot;, x = &quot;&quot;, y = &quot;Revenue&quot;)+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+facet_wrap(vars(State))</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
+</div>
+<div id="assingment-data-acquisition" class="section level1">
+<h1><span class="header-section-number">2</span> Assingment: Data Acquisition</h1>
+<div id="challenge-1.-requesting-data-from-api" class="section level2">
+<h2><span class="header-section-number">2.1</span> Challenge 1. Requesting data from API</h2>
+<p>This piece of code is used to request weather data from provider named “7timer”</p>
+<pre class="r"><code>library(httr)
+resp &lt;- GET(&quot;http://www.7timer.info/bin/api.pl?lon=113.17&amp;lat=23.09&amp;product=astro&amp;output=json&quot;)
+resp</code></pre>
+<pre><code>## Response [http://www.7timer.info/bin/astro.php?lon=113.2&amp;lat=23.1&amp;ac=0&amp;unit=metric&amp;output=json&amp;tzshift=0]
+##   Date: 2021-01-08 16:49
+##   Status: 200
+##   Content-Type: text/html; charset=UTF-8
+##   Size: 5.35 kB
+## {
+##  &quot;product&quot; : &quot;astro&quot; ,
+##  &quot;init&quot; : &quot;2021010812&quot; ,
+##  &quot;dataseries&quot; : [
+##  {
+##      &quot;timepoint&quot; : 3,
+##      &quot;cloudcover&quot; : 9,
+##      &quot;seeing&quot; : 7,
+##      &quot;transparency&quot; : 1,
+##      &quot;lifted_index&quot; : 15,
+## ...</code></pre>
+</div>
+<div id="challenge-2" class="section level2">
+<h2><span class="header-section-number">2.2</span> Challenge 2</h2>
+<p>GOal:</p>
+<ol style="list-style-type: decimal">
+<li>Get some data via an API.</li>
+<li>Scrape one of the competitor websites of canyon (<a href="https://www.radon-bikes.de" class="uri">https://www.radon-bikes.de</a>) and create a small database. 3)The database should contain the model names and prices for at least one category. Use the selectorgadget to get a good understanding of the website structure.</li>
+</ol>
+<pre class="r"><code>library(tidyverse) 
+library(rvest)    
+library(xopen)    
+library(jsonlite) 
+library(glue)     
+library(stringi) 
+
+url_home &lt;- &quot;https://www.radon-bikes.de/&quot;
+xopen(url_home) </code></pre>
+<pre><code>## Running cmd /c start &quot;\&quot;\&quot;&quot; /b &quot;https://www.radon-bikes.de/&quot;</code></pre>
+<pre class="r"><code>html_home &lt;- read_html(url_home)
+list_of_product_types &lt;- html_home%&gt;%
+  html_nodes(css = &quot;.megamenu__item &gt; a&quot;)%&gt;%
+  html_text()
+
+
+list_of_products_url &lt;- html_home %&gt;%
+  html_nodes(&quot;.megamenu__item &gt; a&quot;) %&gt;%
+  html_attr(&quot;href&quot;) %&gt;%
+  enframe(name = NULL, value = &quot;url&quot;) %&gt;%
+  mutate(url = str_glue(&quot;https://www.radon-bikes.de{url}&quot;))
+
+
+bike_category_url &lt;- list_of_products_url$url[1]
+
+xopen(bike_category_url)</code></pre>
+<pre><code>## Running cmd /c start &quot;\&quot;\&quot;&quot; /b \
+##   &quot;https://www.radon-bikes.de/mountainbike/hardtail/&quot;</code></pre>
+<pre class="r"><code>html_bike_category  &lt;- read_html(bike_category_url)
+temp_url &lt;- html_bike_category%&gt;%
+  html_node(&quot;.a-button--hollow-secondary&quot;)%&gt;%
+  html_attr(&quot;href&quot;)%&gt;%
+  enframe(name = NULL, value = &quot;url&quot;) %&gt;%
+  mutate(url = str_glue(&quot;https://www.radon-bikes.de{url}&quot;))
+
+temp_url &lt;- temp_url$url[1]
+xopen(temp_url)</code></pre>
+<pre><code>## Running cmd /c start &quot;\&quot;\&quot;&quot; /b \
+##   &quot;https://www.radon-bikes.de/mountainbike/hardtail/bikegrid/&quot;</code></pre>
+<pre class="r"><code>bike_category_grid_html &lt;- read_html(temp_url)
+
+list_of_product_names &lt;- bike_category_grid_html%&gt;%
+  html_nodes(css=&quot;.m-bikegrid__info &gt; a &gt; div &gt; h4&quot;)%&gt;%
+  html_text%&gt;%
+  stringr::str_replace_all(pattern = &quot;\n&quot;,&quot;&quot;)%&gt;%
+  stringr::str_replace_all(pattern = &quot;  &quot;,&quot;&quot;)%&gt;%
+  enframe(name = NULL, value = &quot;NAME&quot;)
+
+
+
+list_of_product_prices &lt;- bike_category_grid_html%&gt;%
+  html_nodes(css=&quot;.m-bikegrid__price--active&quot;)%&gt;%
+  html_text()%&gt;%
+  stringr::str_extract(pattern = &quot;[0-9€]+&quot;)%&gt;%
+  stringr::str_replace(pattern = &quot;€&quot;,&quot;&quot;)%&gt;%
+  as.numeric()%&gt;%
+  enframe(name = NULL, value = &quot;PRICE&quot;)
+
+list_of_product_prices = na.omit(list_of_product_prices)
+
+bike_df &lt;- data.frame(list_of_product_names,list_of_product_prices)
+saveRDS(bike_df, &quot;bike_data.rds&quot;)
+head(bike_df,10)</code></pre>
+<pre><code>##                        NAME PRICE
+## 1               JEALOUS 8.0  2599
+## 2               JEALOUS 9.0  2999
+## 3              JEALOUS 10.0  3999
+## 4           JEALOUS 10.0 EA  5299
+## 5  NEW JEALOUS SUPERLITE 1X   999
+## 6            JEALOUS AL 8.0   999
+## 7         JEALOUS AL 8.0 HD  1299
+## 8            JEALOUS AL 9.0  1499
+## 9           JEALOUS AL 10.0  1799
+## 10       JEALOUS AL 10.0 SL  1999</code></pre>
+</div>
+</div>
+<div id="assignment" class="section level1">
+<h1><span class="header-section-number">3</span> Assignment</h1>
+<pre class="r"><code>library(vroom)
+library(data.table)
+library(tidyverse)
+library(lubridate)
+
+col_types &lt;- list(
+  id = col_character(),
+  type = col_character(),
+  organization = col_character()
+)
+
+assignee_tbl &lt;- vroom(
+  file       = &quot;assignee.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+col_types &lt;- list(
+  patent_id = col_character(),
+  assignee_id = col_character()
+)
+
+patent_assignee_tbl &lt;- vroom(
+  file       = &quot;patent_assignee.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+Join_tbl &lt;- merge(patent_assignee_tbl,assignee_tbl, by.x = &quot;assignee_id&quot;, by.y = &quot;id&quot;) 
+
+num_tbl&lt;- Join_tbl%&gt;%
+  select(patent_id,organization)%&gt;% 
+  count(organization)%&gt;%
+  group_by(organization) 
+
+final_tbl &lt;- num_tbl %&gt;%
+  select (organization,n)%&gt;%
+  arrange(desc(n))
+
+#List of top ten companies with most assigned/granted patents.
+
+head(final_tbl,10)</code></pre>
+<pre><code>## # A tibble: 10 x 2
+## # Groups:   organization [10]
+##    organization                                    n
+##    &lt;chr&gt;                                       &lt;int&gt;
+##  1 International Business Machines Corporation  7547
+##  2 Samsung Electronics Co., Ltd.                5835
+##  3 Canon Kabushiki Kaisha                       4099
+##  4 Sony Corporation                             3326
+##  5 Microsoft Corporation                        3165
+##  6 Google Inc.                                  2668
+##  7 Kabushiki Kaisha Toshiba                     2656
+##  8 QUALCOMM Incorporated                        2597
+##  9 LG Electronics Inc.                          2459
+## 10 &lt;NA&gt;                                         2377</code></pre>
+<pre class="r"><code># List the top 10 companies with the most new granted patents for 2019.
+
+col_types &lt;- list(
+  id = col_character(),
+  date = col_date(&quot;%Y-%m-%d&quot;),
+  num_claims = col_double()
+)
+
+patent_tbl &lt;- vroom(
+  file       = &quot;patent.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+Join_tbl &lt;- merge(patent_assignee_tbl,assignee_tbl, by.x = &quot;assignee_id&quot;, by.y = &quot;id&quot;) 
+Join_1_tbl &lt;- merge(patent_tbl,Join_tbl, by.x=&quot;id&quot;, by.y =&quot;patent_id&quot;) 
+
+Filter_2019_tbl &lt;- Join_1_tbl %&gt;%
+  select(&quot;id&quot;, &quot;date&quot;,&quot;organization&quot;)%&gt;%
+  filter(between(date,as.Date(&quot;2019-01-01&quot;), as.Date(&quot;2020-01-01&quot;)))%&gt;%
+  count(organization)%&gt;%
+  group_by(organization)    
+
+
+
+Final_tbl &lt;- Filter_2019_tbl %&gt;%
+  select (organization,n)%&gt;%
+  arrange(desc(n))
+
+#list of 10 organisation 
+
+head(Final_tbl,10)</code></pre>
+<pre><code>## # A tibble: 0 x 2
+## # Groups:   organization [0]
+## # ... with 2 variables: organization &lt;chr&gt;, n &lt;int&gt;</code></pre>
+<pre class="r"><code># list of the top 10 companies (worldwide) with the most patents. The top 5 USPTO tech main classes
+
+col_types &lt;- list(
+  patent_id = col_character(),
+  mainclass_id = col_character(),
+  sequence = col_character()
+  
+)
+
+uspc_tbl &lt;- vroom(
+  file       = &quot;uspc.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+Join_tbl &lt;- merge(patent_assignee_tbl,assignee_tbl, by.x = &quot;assignee_id&quot;, by.y = &quot;id&quot;) 
+Join_tbl_3 &lt;- merge(Join_tbl,uspc_tbl, by = &quot;patent_id&quot;)</code></pre>
+</div>
+<div id="assignment-1" class="section level1">
+<h1><span class="header-section-number">4</span> Assignment</h1>
+<div id="challenge-1" class="section level2">
+<h2><span class="header-section-number">4.1</span> challenge 1</h2>
+<p>Goal: Map the time course of the cumulative Covid-19 cases! Your plot should look like this:</p>
+<pre class="r"><code>library(tidyverse)
+library(data.table)
+library(ggplot2)
+library(ggrepel)
+url &lt;- &quot;https://opendata.ecdc.europa.eu/covid19/casedistribution/csv&quot;
+covid_data_tbl &lt;- fread(url)
+
+#check the unique country present.
+covid_data_tbl$countriesAndTerritories %&gt;% unique()</code></pre>
+<pre><code>##   [1] &quot;Afghanistan&quot;                               
+##   [2] &quot;Albania&quot;                                   
+##   [3] &quot;Algeria&quot;                                   
+##   [4] &quot;Andorra&quot;                                   
+##   [5] &quot;Angola&quot;                                    
+##   [6] &quot;Anguilla&quot;                                  
+##   [7] &quot;Antigua_and_Barbuda&quot;                       
+##   [8] &quot;Argentina&quot;                                 
+##   [9] &quot;Armenia&quot;                                   
+##  [10] &quot;Aruba&quot;                                     
+##  [11] &quot;Australia&quot;                                 
+##  [12] &quot;Austria&quot;                                   
+##  [13] &quot;Azerbaijan&quot;                                
+##  [14] &quot;Bahamas&quot;                                   
+##  [15] &quot;Bahrain&quot;                                   
+##  [16] &quot;Bangladesh&quot;                                
+##  [17] &quot;Barbados&quot;                                  
+##  [18] &quot;Belarus&quot;                                   
+##  [19] &quot;Belgium&quot;                                   
+##  [20] &quot;Belize&quot;                                    
+##  [21] &quot;Benin&quot;                                     
+##  [22] &quot;Bermuda&quot;                                   
+##  [23] &quot;Bhutan&quot;                                    
+##  [24] &quot;Bolivia&quot;                                   
+##  [25] &quot;Bonaire, Saint Eustatius and Saba&quot;         
+##  [26] &quot;Bosnia_and_Herzegovina&quot;                    
+##  [27] &quot;Botswana&quot;                                  
+##  [28] &quot;Brazil&quot;                                    
+##  [29] &quot;British_Virgin_Islands&quot;                    
+##  [30] &quot;Brunei_Darussalam&quot;                         
+##  [31] &quot;Bulgaria&quot;                                  
+##  [32] &quot;Burkina_Faso&quot;                              
+##  [33] &quot;Burundi&quot;                                   
+##  [34] &quot;Cambodia&quot;                                  
+##  [35] &quot;Cameroon&quot;                                  
+##  [36] &quot;Canada&quot;                                    
+##  [37] &quot;Cape_Verde&quot;                                
+##  [38] &quot;Cases_on_an_international_conveyance_Japan&quot;
+##  [39] &quot;Cayman_Islands&quot;                            
+##  [40] &quot;Central_African_Republic&quot;                  
+##  [41] &quot;Chad&quot;                                      
+##  [42] &quot;Chile&quot;                                     
+##  [43] &quot;China&quot;                                     
+##  [44] &quot;Colombia&quot;                                  
+##  [45] &quot;Comoros&quot;                                   
+##  [46] &quot;Congo&quot;                                     
+##  [47] &quot;Costa_Rica&quot;                                
+##  [48] &quot;Cote_dIvoire&quot;                              
+##  [49] &quot;Croatia&quot;                                   
+##  [50] &quot;Cuba&quot;                                      
+##  [51] &quot;CuraÃ§ao&quot;                                  
+##  [52] &quot;Cyprus&quot;                                    
+##  [53] &quot;Czechia&quot;                                   
+##  [54] &quot;Democratic_Republic_of_the_Congo&quot;          
+##  [55] &quot;Denmark&quot;                                   
+##  [56] &quot;Djibouti&quot;                                  
+##  [57] &quot;Dominica&quot;                                  
+##  [58] &quot;Dominican_Republic&quot;                        
+##  [59] &quot;Ecuador&quot;                                   
+##  [60] &quot;Egypt&quot;                                     
+##  [61] &quot;El_Salvador&quot;                               
+##  [62] &quot;Equatorial_Guinea&quot;                         
+##  [63] &quot;Eritrea&quot;                                   
+##  [64] &quot;Estonia&quot;                                   
+##  [65] &quot;Eswatini&quot;                                  
+##  [66] &quot;Ethiopia&quot;                                  
+##  [67] &quot;Falkland_Islands_(Malvinas)&quot;               
+##  [68] &quot;Faroe_Islands&quot;                             
+##  [69] &quot;Fiji&quot;                                      
+##  [70] &quot;Finland&quot;                                   
+##  [71] &quot;France&quot;                                    
+##  [72] &quot;French_Polynesia&quot;                          
+##  [73] &quot;Gabon&quot;                                     
+##  [74] &quot;Gambia&quot;                                    
+##  [75] &quot;Georgia&quot;                                   
+##  [76] &quot;Germany&quot;                                   
+##  [77] &quot;Ghana&quot;                                     
+##  [78] &quot;Gibraltar&quot;                                 
+##  [79] &quot;Greece&quot;                                    
+##  [80] &quot;Greenland&quot;                                 
+##  [81] &quot;Grenada&quot;                                   
+##  [82] &quot;Guam&quot;                                      
+##  [83] &quot;Guatemala&quot;                                 
+##  [84] &quot;Guernsey&quot;                                  
+##  [85] &quot;Guinea&quot;                                    
+##  [86] &quot;Guinea_Bissau&quot;                             
+##  [87] &quot;Guyana&quot;                                    
+##  [88] &quot;Haiti&quot;                                     
+##  [89] &quot;Holy_See&quot;                                  
+##  [90] &quot;Honduras&quot;                                  
+##  [91] &quot;Hungary&quot;                                   
+##  [92] &quot;Iceland&quot;                                   
+##  [93] &quot;India&quot;                                     
+##  [94] &quot;Indonesia&quot;                                 
+##  [95] &quot;Iran&quot;                                      
+##  [96] &quot;Iraq&quot;                                      
+##  [97] &quot;Ireland&quot;                                   
+##  [98] &quot;Isle_of_Man&quot;                               
+##  [99] &quot;Israel&quot;                                    
+## [100] &quot;Italy&quot;                                     
+## [101] &quot;Jamaica&quot;                                   
+## [102] &quot;Japan&quot;                                     
+## [103] &quot;Jersey&quot;                                    
+## [104] &quot;Jordan&quot;                                    
+## [105] &quot;Kazakhstan&quot;                                
+## [106] &quot;Kenya&quot;                                     
+## [107] &quot;Kosovo&quot;                                    
+## [108] &quot;Kuwait&quot;                                    
+## [109] &quot;Kyrgyzstan&quot;                                
+## [110] &quot;Laos&quot;                                      
+## [111] &quot;Latvia&quot;                                    
+## [112] &quot;Lebanon&quot;                                   
+## [113] &quot;Lesotho&quot;                                   
+## [114] &quot;Liberia&quot;                                   
+## [115] &quot;Libya&quot;                                     
+## [116] &quot;Liechtenstein&quot;                             
+## [117] &quot;Lithuania&quot;                                 
+## [118] &quot;Luxembourg&quot;                                
+## [119] &quot;Madagascar&quot;                                
+## [120] &quot;Malawi&quot;                                    
+## [121] &quot;Malaysia&quot;                                  
+## [122] &quot;Maldives&quot;                                  
+## [123] &quot;Mali&quot;                                      
+## [124] &quot;Malta&quot;                                     
+## [125] &quot;Marshall_Islands&quot;                          
+## [126] &quot;Mauritania&quot;                                
+## [127] &quot;Mauritius&quot;                                 
+## [128] &quot;Mexico&quot;                                    
+## [129] &quot;Moldova&quot;                                   
+## [130] &quot;Monaco&quot;                                    
+## [131] &quot;Mongolia&quot;                                  
+## [132] &quot;Montenegro&quot;                                
+## [133] &quot;Montserrat&quot;                                
+## [134] &quot;Morocco&quot;                                   
+## [135] &quot;Mozambique&quot;                                
+## [136] &quot;Myanmar&quot;                                   
+## [137] &quot;Namibia&quot;                                   
+## [138] &quot;Nepal&quot;                                     
+## [139] &quot;Netherlands&quot;                               
+## [140] &quot;New_Caledonia&quot;                             
+## [141] &quot;New_Zealand&quot;                               
+## [142] &quot;Nicaragua&quot;                                 
+## [143] &quot;Niger&quot;                                     
+## [144] &quot;Nigeria&quot;                                   
+## [145] &quot;North_Macedonia&quot;                           
+## [146] &quot;Northern_Mariana_Islands&quot;                  
+## [147] &quot;Norway&quot;                                    
+## [148] &quot;Oman&quot;                                      
+## [149] &quot;Pakistan&quot;                                  
+## [150] &quot;Palestine&quot;                                 
+## [151] &quot;Panama&quot;                                    
+## [152] &quot;Papua_New_Guinea&quot;                          
+## [153] &quot;Paraguay&quot;                                  
+## [154] &quot;Peru&quot;                                      
+## [155] &quot;Philippines&quot;                               
+## [156] &quot;Poland&quot;                                    
+## [157] &quot;Portugal&quot;                                  
+## [158] &quot;Puerto_Rico&quot;                               
+## [159] &quot;Qatar&quot;                                     
+## [160] &quot;Romania&quot;                                   
+## [161] &quot;Russia&quot;                                    
+## [162] &quot;Rwanda&quot;                                    
+## [163] &quot;Saint_Kitts_and_Nevis&quot;                     
+## [164] &quot;Saint_Lucia&quot;                               
+## [165] &quot;Saint_Vincent_and_the_Grenadines&quot;          
+## [166] &quot;San_Marino&quot;                                
+## [167] &quot;Sao_Tome_and_Principe&quot;                     
+## [168] &quot;Saudi_Arabia&quot;                              
+## [169] &quot;Senegal&quot;                                   
+## [170] &quot;Serbia&quot;                                    
+## [171] &quot;Seychelles&quot;                                
+## [172] &quot;Sierra_Leone&quot;                              
+## [173] &quot;Singapore&quot;                                 
+## [174] &quot;Sint_Maarten&quot;                              
+## [175] &quot;Slovakia&quot;                                  
+## [176] &quot;Slovenia&quot;                                  
+## [177] &quot;Solomon_Islands&quot;                           
+## [178] &quot;Somalia&quot;                                   
+## [179] &quot;South_Africa&quot;                              
+## [180] &quot;South_Korea&quot;                               
+## [181] &quot;South_Sudan&quot;                               
+## [182] &quot;Spain&quot;                                     
+## [183] &quot;Sri_Lanka&quot;                                 
+## [184] &quot;Sudan&quot;                                     
+## [185] &quot;Suriname&quot;                                  
+## [186] &quot;Sweden&quot;                                    
+## [187] &quot;Switzerland&quot;                               
+## [188] &quot;Syria&quot;                                     
+## [189] &quot;Taiwan&quot;                                    
+## [190] &quot;Tajikistan&quot;                                
+## [191] &quot;Thailand&quot;                                  
+## [192] &quot;Timor_Leste&quot;                               
+## [193] &quot;Togo&quot;                                      
+## [194] &quot;Trinidad_and_Tobago&quot;                       
+## [195] &quot;Tunisia&quot;                                   
+## [196] &quot;Turkey&quot;                                    
+## [197] &quot;Turks_and_Caicos_islands&quot;                  
+## [198] &quot;Uganda&quot;                                    
+## [199] &quot;Ukraine&quot;                                   
+## [200] &quot;United_Arab_Emirates&quot;                      
+## [201] &quot;United_Kingdom&quot;                            
+## [202] &quot;United_Republic_of_Tanzania&quot;               
+## [203] &quot;United_States_of_America&quot;                  
+## [204] &quot;United_States_Virgin_Islands&quot;              
+## [205] &quot;Uruguay&quot;                                   
+## [206] &quot;Uzbekistan&quot;                                
+## [207] &quot;Vanuatu&quot;                                   
+## [208] &quot;Venezuela&quot;                                 
+## [209] &quot;Vietnam&quot;                                   
+## [210] &quot;Wallis_and_Futuna&quot;                         
+## [211] &quot;Western_Sahara&quot;                            
+## [212] &quot;Yemen&quot;                                     
+## [213] &quot;Zambia&quot;                                    
+## [214] &quot;Zimbabwe&quot;</code></pre>
+<pre class="r"><code>class(covid_data_tbl)</code></pre>
+<pre><code>## [1] &quot;data.table&quot; &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>colnames(covid_data_tbl)</code></pre>
+<pre><code>##  [1] &quot;dateRep&quot;                                        
+##  [2] &quot;year_week&quot;                                      
+##  [3] &quot;cases_weekly&quot;                                   
+##  [4] &quot;deaths_weekly&quot;                                  
+##  [5] &quot;countriesAndTerritories&quot;                        
+##  [6] &quot;geoId&quot;                                          
+##  [7] &quot;countryterritoryCode&quot;                           
+##  [8] &quot;popData2019&quot;                                    
+##  [9] &quot;continentExp&quot;                                   
+## [10] &quot;notification_rate_per_100000_population_14-days&quot;</code></pre>
+<pre class="r"><code>str(covid_data_tbl)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   9577 obs. of  10 variables:
+##  $ dateRep                                        : chr  &quot;04/01/2021&quot; &quot;28/12/2020&quot; &quot;21/12/2020&quot; &quot;14/12/2020&quot; ...
+##  $ year_week                                      : chr  &quot;2020-53&quot; &quot;2020-52&quot; &quot;2020-51&quot; &quot;2020-50&quot; ...
+##  $ cases_weekly                                   : int  902 1994 740 1757 1672 1073 1368 1164 606 800 ...
+##  $ deaths_weekly                                  : int  60 88 111 71 137 68 69 61 24 27 ...
+##  $ countriesAndTerritories                        : chr  &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; ...
+##  $ geoId                                          : chr  &quot;AF&quot; &quot;AF&quot; &quot;AF&quot; &quot;AF&quot; ...
+##  $ countryterritoryCode                           : chr  &quot;AFG&quot; &quot;AFG&quot; &quot;AFG&quot; &quot;AFG&quot; ...
+##  $ popData2019                                    : int  38041757 38041757 38041757 38041757 38041757 38041757 38041757 38041757 38041757 38041757 ...
+##  $ continentExp                                   : chr  &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; ...
+##  $ notification_rate_per_100000_population_14-days: num  7.61 7.19 6.56 9.01 7.22 6.42 6.66 4.65 3.7 3.77 ...
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;</code></pre>
+<pre class="r"><code>#getting month name column
+covid_data_tbl$month_name&lt;-months(as.Date(covid_data_tbl$dateRep))
+
+covid_data_tbl$month&lt;-month(as.POSIXlt(covid_data_tbl$dateRep,format=&quot;%d/%m/%Y&quot;))
+covid_data_tbl$year&lt;-year(as.POSIXlt(covid_data_tbl$dateRep,format=&quot;%d/%m/%Y&quot;))
+
+##rolling up data to month year country Level
+covid_mon_yr_country_lvl &lt;- covid_data_tbl %&gt;% 
+  dplyr::group_by(month,month_name,year,countriesAndTerritories,geoId,countryterritoryCode,continentExp) %&gt;% 
+  dplyr::summarise(cases = sum(cases_weekly, na.rm = T)) %&gt;% 
+  dplyr::ungroup()
+
+##creating Cummulative Cases column
+covid_mon_yr_country_lvl &lt;- covid_mon_yr_country_lvl %&gt;% 
+  dplyr::arrange(countriesAndTerritories,year,month) %&gt;% 
+  dplyr::group_by(countriesAndTerritories) %&gt;% 
+  dplyr::mutate(cumulative_cases = cumsum(cases)) %&gt;% 
+  dplyr::ungroup()
+
+##Filtering only for those shown in the graph and for the year = 2020
+covid_mon_yr_country_lvl_fil&lt;- covid_mon_yr_country_lvl %&gt;% 
+  dplyr::filter(countriesAndTerritories %in% c(&quot;Germany&quot;,&quot;Spain&quot;,&quot;France&quot;,&quot;United_Kingdom&quot;,&quot;United_States_of_America&quot;)&amp; year == 2020) %&gt;%
+  dplyr::rename(&#39;Continent_Country&#39; = countriesAndTerritories)
+
+#Graph using ggploat
+covid_mon_yr_country_lvl_fil %&gt;% 
+  mutate(label = if_else(month_name == &quot;December&quot;,as.character(cumulative_cases),NA_character_)) %&gt;% 
+  ggplot(aes(x=month,y =cumulative_cases))+
+  geom_line(aes(color = Continent_Country))+
+  scale_colour_brewer(palette = &quot;Set1&quot;)+
+  scale_x_continuous(breaks=covid_mon_yr_country_lvl_fil$month,labels = covid_mon_yr_country_lvl_fil$month_name)+
+  scale_y_continuous(labels = scales::dollar_format(scale = 1/1e6,
+                                                    prefix = &quot;&quot;,
+                                                    suffix = &quot;M&quot;))+
+  labs(title = &quot;COVID-19 confirmed cases worldwide&quot;,
+       subtitle =  &quot;As of 12/5/2020,USA has the highest cases.&quot;,
+       x = &quot;Year 2020&quot;,
+       y= &quot;Cumulative Cases&quot;
+  )+
+  theme(legend.position = &quot;bottom&quot;,
+        axis.text.x = element_text(angle=45,hjust = 1))+
+  geom_label_repel(aes(label=label),
+                   nudge_x = 1,na.rm = TRUE)</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>covid_data_tbl %&gt;% dplyr::filter(continentExp == &quot;Europe&quot;)</code></pre>
+<pre><code>##          dateRep year_week cases_weekly deaths_weekly countriesAndTerritories
+##    1: 04/01/2021   2020-53         2866            29                 Albania
+##    2: 28/12/2020   2020-52         3569            76                 Albania
+##    3: 21/12/2020   2020-51         4473            85                 Albania
+##    4: 14/12/2020   2020-50         5542            98                 Albania
+##    5: 07/12/2020   2020-49         5363           107                 Albania
+##   ---                                                                        
+## 2666: 03/02/2020   2020-05            2             0          United_Kingdom
+## 2667: 27/01/2020   2020-04            0             0          United_Kingdom
+## 2668: 20/01/2020   2020-03            0             0          United_Kingdom
+## 2669: 13/01/2020   2020-02            0             0          United_Kingdom
+## 2670: 06/01/2020   2020-01            0             0          United_Kingdom
+##       geoId countryterritoryCode popData2019 continentExp
+##    1:    AL                  ALB     2862427       Europe
+##    2:    AL                  ALB     2862427       Europe
+##    3:    AL                  ALB     2862427       Europe
+##    4:    AL                  ALB     2862427       Europe
+##    5:    AL                  ALB     2862427       Europe
+##   ---                                                    
+## 2666:    UK                  GBR    66647112       Europe
+## 2667:    UK                  GBR    66647112       Europe
+## 2668:    UK                  GBR    66647112       Europe
+## 2669:    UK                  GBR    66647112       Europe
+## 2670:    UK                  GBR    66647112       Europe
+##       notification_rate_per_100000_population_14-days month_name month year
+##    1:                                          224.81    January     1 2021
+##    2:                                          280.95   December    12 2020
+##    3:                                          349.88   December    12 2020
+##    4:                                          380.97   December    12 2020
+##    5:                                          357.28   December    12 2020
+##   ---                                                                      
+## 2666:                                            0.00   February     2 2020
+## 2667:                                            0.00    January     1 2020
+## 2668:                                            0.00    January     1 2020
+## 2669:                                            0.00    January     1 2020
+## 2670:                                              NA    January     1 2020</code></pre>
+<pre class="r"><code>sum(covid_data_tbl$cases,na.rm = T)</code></pre>
+<pre><code>## [1] 84532824</code></pre>
+</div>
+<div id="mortality-rate" class="section level2">
+<h2><span class="header-section-number">4.2</span> Mortality rate</h2>
+<pre class="r"><code>library(tidyverse)
+library(data.table)
+library(ggplot2)
+library(ggrepel)
+library(maps)
+library(ggthemes)
+library(mapproj)
+
+
+url &lt;- &quot;https://opendata.ecdc.europa.eu/covid19/casedistribution/csv&quot;
+covid_data_tbl &lt;- fread(url)
+
+world &lt;- map_data(&quot;world&quot;)
+colnames((world))</code></pre>
+<pre><code>## [1] &quot;long&quot;      &quot;lat&quot;       &quot;group&quot;     &quot;order&quot;     &quot;region&quot;    &quot;subregion&quot;</code></pre>
+<pre class="r"><code>covid_data_tbl$countriesAndTerritories &lt;- str_replace_all(covid_data_tbl$countriesAndTerritories,&quot;_&quot;,&quot; &quot;)
+world_data&lt;- covid_data_tbl %&gt;% 
+  dplyr::mutate(countriesAndTerritories = case_when(
+    countriesAndTerritories == &quot;United Kingdom&quot; ~ &quot;UK&quot;,
+    countriesAndTerritories == &quot;United States of America&quot; ~ &quot;USA&quot;,
+    countriesAndTerritories == &quot;Czechia&quot; ~ &quot;Czech Republic&quot;,
+    TRUE ~ countriesAndTerritories
+  ))
+
+deaths = world_data$deaths_weekly
+
+options(scipen = 999)
+
+country_mortality_rate&lt;- world_data %&gt;% 
+  dplyr::group_by(countriesAndTerritories) %&gt;% 
+  dplyr::summarise(deaths = sum(deaths, na.rm = T),
+                   popData2019 = nth(popData2019,1)) %&gt;% 
+  dplyr::mutate(mortality_rate = round((deaths/popData2019)*100,3))
+
+plot_data &lt;- country_mortality_rate %&gt;%  
+  dplyr::right_join(world,by=c(&quot;countriesAndTerritories&quot;=&quot;region&quot;))
+
+plot_data %&gt;% ggplot()+
+  geom_map(map = world,aes(map_id = countriesAndTerritories,fill=mortality_rate),color = &quot;#7f7f7f&quot;,size=0.25)+
+  scale_fill_gradient(low=&quot;#FF3333&quot;,high = &quot;#330000&quot;,name=&quot;Mortality Rate&quot;)+
+  expand_limits(x= world$long,y=world$lat)+
+  labs(x=&quot;&quot;,y=&quot;&quot;,title=&quot;Cnfirmed COVID-19 deaths relative to the size of population&quot;)</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><strong>Thank you</strong></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
